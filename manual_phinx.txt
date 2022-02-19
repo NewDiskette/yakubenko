@@ -1,0 +1,176 @@
+LESSON 4
+https://www.youtube.com/watch?v=4xYrSJp1ubI&list=PLru7xY-nZMrXZI-x8nTVJYG_tfgSIVngC&index=5
+
+mkdir config/Migrations
+mkdir config/Seeds
+
+vendor/bin/phinx
+vendor/bin/phinx init
+# https://sergeivl.ru/phinx-migration.html
+
+# change phinx.yml:
+[
+    paths:
+        migrations: '%%PHINX_CONFIG_DIR%%/config/Migrations'
+        seeds: '%%PHINX_CONFIG_DIR%%/config/Seeds'
+
+    environments:
+        default_migration_table: phinxlog
+        default_database: default
+        default:
+            adapter: mysql
+            host: localhost
+            name: yakubenko
+            user: root
+            pass: ''
+            port: 3306
+            charset: utf8
+]
+
+vendor/bin/phinx status
+vendor/bin/phinx create CreateTableBooks
+
+# change config/Migrations/20220219102733_create_table_books.php:
+[
+    public function up()
+    {
+        $books = $this->table('books');
+
+        $books
+            ->addColumn('publisher_id', 'integer', ['limit' => 5, 'null' => false])
+            ->addColumn('uid', 'string', ['limit' => 64, 'null' => false])
+            ->addColumn('title', 'string', ['limit' => 150, 'null' => false])
+            ->addColumn('cover', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('description', 'text', ['null' => true])
+            ->addColumn('year', 'integer', ['limit' => 4, 'null' => true]);
+
+        $books->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('books');
+    }
+]
+
+vendor/bin/phinx status
+vendor/bin/phinx migrate
+vendor/bin/phinx status
+# vendor/bin/phinx rollback - откатывает одну последнюю миграцию
+
+vendor/bin/phinx create CreateTableWriters
+# change config/Migrations/20220219111048_create_table_writers.php:
+[
+    public function up()
+    {
+        $writers = $this->table('writers');
+
+        $writers
+            ->addColumn('firstname', 'string', ['limit' => 64, 'null' => false])
+            ->addColumn('lastname', 'string', ['limit' => 64, 'null' => false])
+            ->addColumn('middlename', 'string', ['limit' => 64, 'null' => true])
+            ->addColumn('photo', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('bio', 'text', ['null' => true])
+            ->addColumn('year_b', 'integer', ['limit' => 4, 'null' => true])
+            ->addColumn('year_d', 'integer', ['limit' => 4, 'null' => true]);
+
+        $writers->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('writers');
+    }
+]
+
+vendor/bin/phinx create CreateTablePublishers
+# change config/Migrations/20220219112906_create_table_publishers.php:
+[
+    public function up()
+    {
+        $publishers = $this->table('publishers');
+
+        $publishers
+            ->addColumn('title', 'string', ['limit' => 100, 'null' => false])
+            ->addColumn('logotype', 'string', ['limit' => 100, 'null' => true])
+            ->addColumn('description', 'text', ['null' => true]);
+
+        $publishers->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('publishers');
+    }
+]
+
+vendor/bin/phinx create CreateTableCategories
+# change config/Migrations/20220219115054_create_table_categories.php:
+
+vendor/bin/phinx status
+vendor/bin/phinx migrate
+vendor/bin/phinx status
+
+vendor/bin/phinx create TableBooksWriters
+# change config/Migrations/20220219120827_table_books_writers.php:
+[
+    public function up()
+    {
+        $bookswriters = $this->table('books_writers');
+
+        $bookswriters
+            ->addColumn('book_id', 'integer', ['limit' => 10, 'null' => false])
+            ->addColumn('writer_id', 'integer', ['limit' => 10, 'null' => false]);
+
+        $bookswriters->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('books_writers');
+    }
+]
+
+vendor/bin/phinx create TableBooksCategories
+# change config/Migrations/20220219164722_table_books_categories.php:
+[
+    public function up()
+    {
+        $bookscategories = $this->table('books_categories');
+
+        $bookscategories
+            ->addColumn('book_id', 'integer', ['limit' => 10, 'null' => false])
+            ->addColumn('category_id', 'integer', ['limit' => 10, 'null' => false]);
+
+        $bookscategories->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('books_categories');
+    }
+]
+
+vendor/bin/phinx create TableWritersCategories
+# change config/Migrations/20220219165953_table_writers_categories.php:
+[
+    public function up()
+    {
+        $writerscategories = $this->table('writers_categories');
+
+        $writerscategories
+            ->addColumn('writer_id', 'integer', ['limit' => 10, 'null' => false])
+            ->addColumn('category_id', 'integer', ['limit' => 10, 'null' => false]);
+
+        $writerscategories->save();
+    }
+
+    public function down()
+    {
+        $this->dropTable('writers_categories');
+    }
+]
+
+vendor/bin/phinx status
+vendor/bin/phinx migrate
+vendor/bin/phinx status
