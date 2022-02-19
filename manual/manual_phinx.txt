@@ -1,5 +1,5 @@
 LESSON 4
-https://www.youtube.com/watch?v=4xYrSJp1ubI&list=PLru7xY-nZMrXZI-x8nTVJYG_tfgSIVngC&index=5
+https://youtu.be/4xYrSJp1ubI
 
 mkdir config/Migrations
 mkdir config/Seeds

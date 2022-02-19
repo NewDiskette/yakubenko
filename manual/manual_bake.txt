@@ -1,0 +1,11 @@
+LESSON 5
+https://youtu.be/3lqeGRBSmfY
+
+cd bin
+./cake
+./cake bake
+./cake bake model
+./cake bake model books
+./cake bake model writers
+./cake bake model publishers
+./cake bake model categories
