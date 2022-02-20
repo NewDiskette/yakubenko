@@ -1,0 +1,27 @@
+LESSON 6
+https://youtu.be/PNvUUZzUfLM
+
+bin/cake bake controller books
+# change src/Controller/BooksController.php:
+[
+    public function index()
+    {
+        // $this->paginate = [
+        //     'contain' => ['Publishers'],
+        // ];
+        // $books = $this->paginate($this->Books);
+
+        $books = $this->Books->find('all')->where(['year' => 1999])->toArray();
+
+        $this->set(compact('books'));
+    }
+]
+
+mkdir src/Template/Books
+touch src/Template/Books/index.ctp
+# change src/Template/Books/index.ctp:
+[
+    <pre>
+        <?php print_r($books);?>
+    </pre>
+]
